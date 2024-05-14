@@ -1,6 +1,17 @@
 <div>
   <button (click)="show()">show</button>
+  <ng-container
+    *ngTemplateOutlet="
+      tmpl;
+      context: {
+        $implicit: 'Kain',
+        age: 24
+      }
+    "
+  ></ng-container>
+
   <ng-container #entry></ng-container>
+
   <ng-template #tmpl let-name let-age="age">
     <h1>I'm {{ name }}, {{ age }} years old.</h1>
   </ng-template>
