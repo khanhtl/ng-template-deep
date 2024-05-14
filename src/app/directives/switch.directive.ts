@@ -8,19 +8,20 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
+interface Case {
+  view: TemplateRef<any>;
+  value: any;
+}
+
 @Directive({
   selector: '[appSwitchCase]',
 })
 export class SwitchCaseDirective {
-  value: any;
-
   @Input() set appSwitchCase(value: any) {
-    this.value = value;
-    this._switchDirective.addCase(value);
-    this._viewContainerRef.clear();
-    if (this._switchDirective.value === this.value) {
-      this._viewContainerRef.createEmbeddedView(this._templateRef);
-    }
+    this._switchDirective.addCase({
+      view: this._templateRef,
+      value: value,
+    });
   }
   constructor(
     private _templateRef: TemplateRef<any>,
@@ -39,14 +40,10 @@ export class SwitchDefaultDirective {
     private _viewContainerRef: ViewContainerRef
   ) {}
   ngOnInit() {
-    this._viewContainerRef.clear();
-    let isDefaultCase = this._switchDirective.cases.every(
-      (value) => value !== this._switchDirective.value
-    );
-    this._viewContainerRef.clear();
-    if (isDefaultCase) {
-      this._viewContainerRef.createEmbeddedView(this._templateRef);
-    }
+    this._switchDirective.addCase({
+      view: this._templateRef,
+      value: undefined,
+    });
   }
 }
 
@@ -57,16 +54,44 @@ export class SwitchDirective {
   value: any;
   @Input() set appSwitch(value: any) {
     this.value = value;
-    this._viewContainerRef.clear();
-    this._viewContainerRef.createEmbeddedView(this._templateRef);
   }
-  cases: any[] = [];
+  cases: Case[] = [];
 
   constructor(
     private _templateRef: TemplateRef<any>,
     private _viewContainerRef: ViewContainerRef
   ) {}
-  addCase(value: any) {
-    this.cases.push(value);
+
+  addCase(item: Case) {
+    this.cases.push(item);
+  }
+
+  updateView() {
+    const activeCases = this.cases.filter((item) => item.value === this.value);
+    if (activeCases.length) {
+      activeCases.forEach((activeCase) => {
+        this._viewContainerRef.createEmbeddedView(activeCase.view);
+      });
+      return;
+    }
+    const defaultCase = this.cases.find((item) => !item.value);
+    if (defaultCase) {
+      this._viewContainerRef.createEmbeddedView(defaultCase.view);
+    }
+  }
+
+  ngOnInit(): void {
+    this._viewContainerRef.createEmbeddedView(this._templateRef);
+  }
+
+  ngAfterViewInit(): void {
+    this.updateView();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['appSwitch'].firstChange) {
+      this._viewContainerRef.clear();
+      this.updateView();
+    }
   }
 }
