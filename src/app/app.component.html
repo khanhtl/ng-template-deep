@@ -49,4 +49,15 @@
     Item: {{ item }}, index: {{ index }}, isFirst: {{ first }}, isLast:
     {{ last }}, isOdd: {{ odd }}, isEven: {{ even }}
   </li>
+  <hr />
+  <h1>ngIf</h1>
+  <button (click)="toggle()">toggle</button>
+  <ng-template [appIf]="isShowContent">
+    <h3>This is content</h3>
+  </ng-template>
+  <h1>ngIf short hand</h1>
+
+  <ng-container *appIf="isShowContent">
+    <h3>This is content</h3>
+  </ng-container>
 </div>
