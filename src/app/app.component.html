@@ -15,4 +15,38 @@
   <ng-template #tmpl let-name let-age="age">
     <h1>I'm {{ name }}, {{ age }} years old.</h1>
   </ng-template>
+
+  <hr />
+  <h1>ngForIn</h1>
+  <ng-template
+    appFor
+    [appForIn]="[1, 2, 3, 4]"
+    let-item
+    let-first="first"
+    let-last="last"
+    let-index="index"
+    let-odd="odd"
+    let-even="even"
+  >
+    <li>
+      Item: {{ item }}, index: {{ index }}, isFirst: {{ first }}, isLast:
+      {{ last }}, isOdd: {{ odd }}, isEven: {{ even }}
+    </li>
+  </ng-template>
+  <hr />
+  <h1>ngForIn short hand</h1>
+  <li
+    *appFor="
+      let item;
+      in: [1, 2, 3, 4];
+      index as index;
+      odd as odd;
+      even as even;
+      first as first;
+      last as last
+    "
+  >
+    Item: {{ item }}, index: {{ index }}, isFirst: {{ first }}, isLast:
+    {{ last }}, isOdd: {{ odd }}, isEven: {{ even }}
+  </li>
 </div>
