@@ -16,8 +16,6 @@ export class IfDirective {
     private viewContainerRef: ViewContainerRef
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.viewContainerRef);
-
     if (changes['appIf'].currentValue) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     } else {

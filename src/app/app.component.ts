@@ -15,6 +15,21 @@ export class AppComponent {
   @ViewChild('entry', { read: ViewContainerRef }) entry!: ViewContainerRef;
 
   isShowContent = true;
+  item = 1;
+
+  increase() {
+    this.item++;
+  }
+  decrease() {
+    if (this.item == 1) {
+      return;
+    }
+    this.item--;
+  }
+  reset() {
+    this.item = 1;
+  }
+
   toggle() {
     this.isShowContent = !this.isShowContent;
   }

@@ -60,4 +60,30 @@
   <ng-container *appIf="isShowContent">
     <h3>This is content</h3>
   </ng-container>
+
+  <hr />
+  <h1>ngSwitch current value:{{ item }}</h1>
+  <button (click)="increase()">increase</button>
+  <button (click)="decrease()">decrease</button>
+  <button (click)="reset()">reset</button>
+  <ng-template [appSwitch]="item">
+    <ng-template appSwitchDefault>
+      <h3>Item default</h3>
+    </ng-template>
+    <ng-template [appSwitchCase]="1">
+      <h3>Item has value 1</h3>
+    </ng-template>
+    <ng-template [appSwitchCase]="2">
+      <h3>Item has value 2</h3>
+    </ng-template>
+    <ng-template #child [appSwitchCase]="3">
+      <h3>Item has value 3</h3>
+    </ng-template>
+    <ng-template [appSwitchCase]="4">
+      <h3>Item has value 4</h3>
+    </ng-template>
+    <ng-template [appSwitchCase]="5">
+      <h3>Item has value 5</h3>
+    </ng-template>
+  </ng-template>
 </div>
